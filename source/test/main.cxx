@@ -2,7 +2,7 @@
  * \file
  * Runs all unit tests in the compiled executable.
  */
-#include <UnitTest++.h>
+#include <UnitTest++/UnitTest++.h>
 
 
 int main ()

@@ -4,7 +4,7 @@
  *
  * \author Andres Jaan Tack (tack@cs.wisc.edu)
  */
-#include <UnitTest++.h>
+#include <UnitTest++/UnitTest++.h>
 #include <chaining_hash_table.hxx>
 
 typedef ChainingHashtable<unsigned int, unsigned int> UnsignedIntStore;
