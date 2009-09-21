@@ -1,15 +1,15 @@
 /*!
  * \file
- * Basic functionality tests for the KeyValueStore class template.
+ * Basic functionality tests for the ChainingHashtable class template.
  *
  * \author Andres Jaan Tack (tack@cs.wisc.edu)
  */
 #include <UnitTest++.h>
-#include <key_value_store.hxx>
+#include <chaining_hash_table.hxx>
 
-typedef KeyValueStore<unsigned int, unsigned int> UnsignedIntStore;
+typedef ChainingHashtable<unsigned int, unsigned int> UnsignedIntStore;
 
-SUITE(KeyValueStore)
+SUITE(ChainingHashtable)
 {
 	struct PopulatedStore
 	{

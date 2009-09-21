@@ -7,8 +7,6 @@
 #ifndef KEY_VALUE_STORE_HXX_E9THO8M5
 #define KEY_VALUE_STORE_HXX_E9THO8M5
 
-#include <cstdlib>
-
 /*!
  * \class KeyValueStore
  *
@@ -18,46 +16,42 @@
  * 
  * \author Andres Jaan Tack (tack@cs.wisc.edu)
  */
-template <typename KeyType, typename DataType, std::size_t KeyRange = 1024>
+template <typename KeyType, typename DataType>
 class KeyValueStore
 {
 public:
 	
 	/*!
-	 * Build an empty key-value store.
-	 */
-	KeyValueStore ();
-	
-	/*!
 	 * Destroy the keystore and all values contained therein.
 	 */
-	virtual ~KeyValueStore ();
+	virtual ~KeyValueStore ()
+		{	};
 	
 	/*!
 	 * Assign a value at the given key.
 	 * \param key may be used to retrieve the stored value subsequently.
 	 * \value will replace any existing value stored at key.
 	 */
-	virtual void put (const KeyType key, const DataType& value);
+	virtual void put (const KeyType key, const DataType& value) = 0;
 	
 	/*
 	 * Retrieve the value stored at key.
 	 * \exception InvalidEntry raised when 
 	 */
-	virtual DataType get (const KeyType key);
+	virtual DataType get (const KeyType key) const = 0;
 	
 	/*
 	 * Determines whether a value exists at the given key.
 	 * \param key identifies a possible entry in the store.
 	 * \return true if key maps to a value, false if no value is stored at key.
 	 */
-	virtual bool hasValueFor (const KeyType key);
+	virtual bool hasValueFor (const KeyType key) const = 0;
 
 	/*
 	 * Deletes any entry at key. It is safe to delete for a key with no value.
 	 * \param key identifies the value to be deleted.
 	 */
-	virtual void unmap (const KeyType key);
+	virtual void unmap (const KeyType key) = 0;
 	
 	/*
 	 * \class ValueNotFound
@@ -88,11 +82,6 @@ public:
 	private:
 		const KeyType itsKey;  /*!< The key whose lookup caused the exception. */
 	};
-
-protected:
-	
 };
-
-#include "key_value_store.cxx"
 
 #endif /* end of include guard: KEY_VALUE_STORE_HXX_E9THO8M5 */
