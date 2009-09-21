@@ -56,8 +56,8 @@ template <typename KeyType, typename DataType, size_t KeyRange>
 void ChainingHashtable<KeyType, DataType, KeyRange>::Chain::map (const KeyType key, const DataType& value)
 {
 	KeyValuePair mapping(key, value);
-	itsEntries.push_front(mapping);
 	itsEntries.remove_if(bind1st(typename KeyValuePair::match_by_key(), key));
+	itsEntries.push_front(mapping);
 }
 
 
