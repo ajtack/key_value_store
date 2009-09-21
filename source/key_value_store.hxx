@@ -7,6 +7,8 @@
 #ifndef KEY_VALUE_STORE_HXX_E9THO8M5
 #define KEY_VALUE_STORE_HXX_E9THO8M5
 
+#include <cstdlib>
+
 /*!
  * \class KeyValueStore
  *
@@ -16,8 +18,8 @@
  * 
  * \author Andres Jaan Tack (tack@cs.wisc.edu)
  */
-template <KeyType, DataType>
-class KeyValueStore : public std::tr1::unordered_map
+template <typename KeyType, typename DataType, std::size_t KeyRange = 1024>
+class KeyValueStore
 {
 public:
 	
@@ -36,40 +38,40 @@ public:
 	 * \param key may be used to retrieve the stored value subsequently.
 	 * \value will replace any existing value stored at key.
 	 */
-	virtual void put (const KeyType& key, const DataType& value);
+	virtual void put (const KeyType key, const DataType& value);
 	
 	/*
 	 * Retrieve the value stored at key.
 	 * \exception InvalidEntry raised when 
 	 */
-	virtual DataType get (const KeyType& key);
+	virtual DataType get (const KeyType key);
 	
 	/*
 	 * Determines whether a value exists at the given key.
 	 * \param key identifies a possible entry in the store.
 	 * \return true if key maps to a value, false if no value is stored at key.
 	 */
-	virtual bool hasEntry (const KeyType& key);
+	virtual bool hasValueFor (const KeyType key);
 
 	/*
 	 * Deletes any entry at key. It is safe to delete for a key with no value.
 	 * \param key identifies the value to be deleted.
 	 */
-	virtual void delete (const KeyType& key);
+	virtual void unmap (const KeyType key);
 	
 	/*
 	 * \class ValueNotFound
 	 * Defines an exceptional case for KeyValueStore::get, in which the key given has
 	 * no corresponding value.
 	 */
-	class ValueNotFound : public std::exception
+	class ValueNotFound
 	{
 	public:
 		/*!
 		 * Identifies a ValueNotFound error when retrieving the given key.
 		 * \param key the key at which no value was found when it was expected.
 		 */
-		inline ValueNotFound (const KeyType& key)
+		inline ValueNotFound (const KeyType key)
 		: itsKey(key)
 			{	}
 			
@@ -87,8 +89,10 @@ public:
 		const KeyType itsKey;  /*!< The key whose lookup caused the exception. */
 	};
 
-private:
-	/* Data. */
+protected:
+	
 };
+
+#include "key_value_store.cxx"
 
 #endif /* end of include guard: KEY_VALUE_STORE_HXX_E9THO8M5 */

@@ -1,0 +1,5 @@
+env = Environment(CPPPATH=['/opt/local/include/UnitTest++', '#source'], LIBPATH='/opt/local/lib')
+unit_tests = env.Program('test', [Glob('*_test.cxx'), 'main.cxx'], LIBS=['UnitTest++'])
+env.Alias('test', [unit_tests], unit_tests[0].path)
+env.AlwaysBuild('test')
+Return('unit_tests')
