@@ -109,6 +109,12 @@ private:
 		 */
 		void hasMatchingEntry (const KeyType key) const
 			{	return find(key) != NULL; }
+		
+		/*!
+		 * Removes any mapping in this chain given by key.
+		 * \param key identifies the mapping to be removed, if it exists.
+		 */
+		void unmap (const KeyType key);
 
 	protected:
 		list<KeyValuePair> itsEntries;

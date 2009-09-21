@@ -42,7 +42,10 @@ bool ChainingHashtable<KeyType, DataType, KeyRange>::hasValueFor (const KeyType 
 
 template <typename KeyType, typename DataType, size_t KeyRange>
 void ChainingHashtable<KeyType, DataType, KeyRange>::unmap (const KeyType key)
-{	}
+{
+	size_t hash_index = hash(key);
+	itsEntries[hash_index].unmap(key);
+}
 
 
 template <typename KeyType, typename DataType, size_t KeyRange>
@@ -71,4 +74,11 @@ const KeyValuePair<KeyType, DataType>* const ChainingHashtable<KeyType, DataType
 		return &(*match);
 	else
 		return NULL;
+}
+
+
+template <typename KeyType, typename DataType, size_t KeyRange>
+void ChainingHashtable<KeyType, DataType, KeyRange>::Chain::unmap (const KeyType key)
+{
+	itsEntries.remove_if(bind1st(typename KeyValuePair::match_by_key(), key));
 }
