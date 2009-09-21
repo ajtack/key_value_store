@@ -102,11 +102,6 @@ private:
 		const KeyValuePair* const find(const KeyType key) const;
 		
 		/*!
-		 * An object for comparison which identifies a nonexistent result of search.
-		 */
-		static const KeyValuePair* const aNonexistentEntry;
-		
-		/*!
 		 * Searches the chain for a key/value pair with a matching key.
 		 *
 		 * \param key is the key being sought out.
