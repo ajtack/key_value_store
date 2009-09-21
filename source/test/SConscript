@@ -2,6 +2,6 @@ Import('env')
 env = env.Clone(CPPPATH=['/opt/local/include', '#source'], LIBPATH='/opt/local/lib')
 
 unit_tests = env.Program('test', [Glob('*_test.cxx'), 'main.cxx'], LIBS=['UnitTest++'])
-env.Alias('testy', [unit_tests], unit_tests[0].path)
-env.AlwaysBuild('testy')
+env.Alias('test', [unit_tests], unit_tests[0].path)
+env.AlwaysBuild('test')
 Return('unit_tests')
