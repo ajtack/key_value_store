@@ -46,6 +46,11 @@ public:
 	
 	/*!
 	 * A unary function object which identifies key/value pairs with matching keys.
+	 *
+	 * This could be used as a parameter to stl algorithms as below:
+	 * \code
+	 *  find_if(list.begin(), list.end(), std::bind1st(typename KeyValuePair::match_by_key(), key))
+	 * \endcode
 	 */
 	struct match_by_key : binary_function<KeyType, KeyValuePair, bool>
 	{
