@@ -6,6 +6,7 @@
  *
  * \author Andres Jaan Tack (tack@cs.wisc.edu)
  */
+#include <algorithm>
 #include <cstddef>
 #include <functional>
 using std::bind1st;
