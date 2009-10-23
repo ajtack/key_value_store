@@ -29,7 +29,7 @@ DataType ChainingHashtable<KeyType, DataType, KeyRange>::get (const KeyType key)
 	if (mapped_pair == NULL)
 		throw typename KeyValueStore<KeyType, DataType>::ValueNotFound(key);
 	else
-		return mapped_pair->second;
+		return mapped_pair->value();
 }
 
 
@@ -37,7 +37,7 @@ template <typename KeyType, typename DataType, size_t KeyRange>
 bool ChainingHashtable<KeyType, DataType, KeyRange>::hasValueFor (const KeyType key) const
 {
 	size_t hash_index = hash(key);
-	return itsEntries[hash_index].find(key) != NULL;
+	return itsEntries[hash_index].hasMatchingEntry(key);
 }
 
 
@@ -57,24 +57,45 @@ size_t ChainingHashtable<KeyType, DataType, KeyRange>::hash (const KeyType key)
 
 
 template <typename KeyType, typename DataType, size_t KeyRange>
-void ChainingHashtable<KeyType, DataType, KeyRange>::Chain::map (const KeyType key, const DataType& value)
+const KeyValuePair<KeyType, DataType>* const
+      ChainingHashtable<KeyType, DataType, KeyRange>::Chain::find (const KeyType key) const
 {
-	KeyValuePair mapping(key, value);
-	itsEntries.remove_if(bind1st(typename KeyValuePair::match_by_key(), key));
-	itsEntries.push_front(mapping);
+	Link mapping = match(key);
+	if (mapping != itsEntries.end())
+		return &(*mapping);
+	else
+		return NULL;		
 }
 
 
 template <typename KeyType, typename DataType, size_t KeyRange>
-const KeyValuePair<KeyType, DataType>* const ChainingHashtable<KeyType, DataType, KeyRange>::Chain::find (const KeyType key) const
+bool ChainingHashtable<KeyType, DataType, KeyRange>::Chain::hasMatchingEntry(const KeyType key) const
+{
+	return match(key) != itsEntries.end();
+}
+
+
+template <typename KeyType, typename DataType, size_t KeyRange>
+void ChainingHashtable<KeyType, DataType, KeyRange>::Chain::map (const KeyType key, const DataType& value)
+{
+	KeyValuePair newMapping(key, value);
+	Link oldMapping = match(key);
+	
+	if (oldMapping != itsEntries.end())
+		itsEntries.erase(oldMapping);
+	itsEntries.push_front(newMapping);
+}
+
+
+template <typename KeyType, typename DataType, size_t KeyRange>
+const typename ChainingHashtable<KeyType, DataType, KeyRange>::Chain::Link
+      ChainingHashtable<KeyType, DataType, KeyRange>::Chain::match (const KeyType key) const
 {
 	using std::find_if;
-	typename list<KeyValuePair>::const_iterator match = find_if(itsEntries.begin(), itsEntries.end(), bind1st(typename KeyValuePair::match_by_key(), key));
 	
-	if (match != itsEntries.end())
-		return &(*match);
-	else
-		return NULL;
+	// find_if is not nominally const, but here we know our matcher treats values constantly.
+	list<KeyValuePair>& entries = const_cast<list<KeyValuePair>&>(itsEntries);
+	return find_if(entries.begin(), entries.end(), bind1st(typename KeyValuePair::match_by_key(), key));
 }
 
 

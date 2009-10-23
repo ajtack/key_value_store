@@ -84,6 +84,14 @@ private:
 		typedef KeyValuePair<KeyType, DataType> KeyValuePair;
 		
 		/*!
+		 * Searches through the hash chain to locate the given key.
+		 * \key is the key being sought.
+		 * \return a pointer to the link which is found as a result of the search,
+		 *  or null if there was no matching key.
+		 */
+		const KeyValuePair* const find(const KeyType key) const;
+		
+		/*!
 		 * Maps a key/value pair. If the key is already mapped in the hash chain,
 		 * then this method creates a new chain link with the new key and value
 		 * and atomically replaces the new link with the old.
@@ -95,20 +103,12 @@ private:
 		void map (const KeyType key, const DataType& value);
 		
 		/*!
-		 * Searches through the hash chain to locate the given key.
-		 * \key is the key being sought.
-		 * \return a pointer to the link which is found as a result of the search.
-		 */
-		const KeyValuePair* const find(const KeyType key) const;
-		
-		/*!
 		 * Searches the chain for a key/value pair with a matching key.
 		 *
 		 * \param key is the key being sought out.
 		 * \return true if key is found in a key/value pair in the chain.
 		 */
-		void hasMatchingEntry (const KeyType key) const
-			{	return find(key) != NULL; }
+		bool hasMatchingEntry (const KeyType key) const;
 		
 		/*!
 		 * Removes any mapping in this chain given by key.
@@ -118,6 +118,14 @@ private:
 
 	protected:
 		list<KeyValuePair> itsEntries;
+		typedef typename list<KeyValuePair>::iterator Link;
+		
+		/*!
+		 * Searches through the internal list to locate the given key.
+		 * \key is the key being sought.
+		 * \return the link which matches this 
+		 */
+		const Link match(const KeyType key) const;
 	};
 	
 	/*!
@@ -127,6 +135,6 @@ private:
 	Chain itsEntries[KeyRange];
 };
 
-#include "chaining_hash_table.cxx"
+#include "template_definition/chaining_hash_table.cxx"
 
 #endif /* end of include guard: CHAINING_HASH_TABLE_HXX_VWNU2QA1 */

@@ -61,7 +61,7 @@ public:
 		 * \param right is the right side of the comparison.
 		 * \return true if the keys of left and right are equal, false otherwise.
 		 */
-		inline bool operator() (KeyType key, KeyValuePair pair) const
+		inline bool operator() (KeyType key, const KeyValuePair& pair) const
 			{	return pair.key() == key;	}
 	};
 };
