@@ -1,0 +1,3 @@
+Import('env')
+
+env.Program('gets_vs_puts', ['main.cxx'], build_dir='gets_vs_puts')

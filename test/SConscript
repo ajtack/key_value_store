@@ -1,5 +1,4 @@
 Import('env')
-env = env.Clone(CPPPATH=['/opt/local/include', '#header'], LIBPATH='/opt/local/lib')
 
 unit_tests = env.Program('test', [Glob('*_test.cxx'), 'main.cxx'], LIBS=['UnitTest++'])
 env.Alias('test', [unit_tests], unit_tests[0].path)
